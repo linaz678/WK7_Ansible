@@ -12,7 +12,7 @@ locals {
 }
 
 source "amazon-ebs" "aws" {
-  ami_name      = "jiangren-packer-demo-1-${local.timestamp}"
+  ami_name      = "jiangren-packer-demo-1-${local.timestamp}" //ami + timestamp https://learn.hashicorp.com/tutorials/packer/aws-get-started-build-image?in=packer/aws-get-started
   instance_type = "t2.micro"
   region        = "ap-southeast-2"
   source_ami_filter {
@@ -26,7 +26,7 @@ source "amazon-ebs" "aws" {
   }
   ssh_username = "ubuntu"
   tags = {
-    Base_AMI_Name  = "jiangren-packer-demo-1"
+    Base_AMI_Name  = "jiangren-packer-demo-1" //Here make a tage 
   }
 }
 
@@ -35,7 +35,7 @@ build {
   sources = [
     "source.amazon-ebs.aws"
   ]
-  provisioner "shell" {
+  provisioner "shell" { //EC2 command 
     script = "bake.sh"
   }
 

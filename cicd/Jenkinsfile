@@ -66,11 +66,11 @@ pipeline {
             when {expression{return params.blTestAnsible}}
             steps {
                 withAWS(credentials: 'AWS_linazhao', region: 'ap-southeast-2') {
-                    // some block
+                    // some block, 对名字
                     dir('ansible') {
                         sh '''
                             ansible all  -m ping
-                            ansible tag_shell -a "cat /home/ubuntu/hello.txt"
+                            ansible tag_shell -a "cat /home/ubuntu/hello.txt"  
                             ansible tag_ansible -a "curl localhost"
                         '''
                     }
