@@ -69,7 +69,7 @@ resource "aws_instance" "packer-ansible" {
   ami           = "${data.aws_ami.image_packer-ansible.id}"
   instance_type = "t2.micro"
   key_name = "${aws_key_pair.deployer.key_name}"
-//<<EOF EOD 表面一整段字符串， 把一整段文字写进index.html
+
   user_data = <<EOD 
 #!/bin/bash
 sudo cat <<EOF > /var/www/html/index.html
