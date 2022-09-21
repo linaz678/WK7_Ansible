@@ -42,12 +42,12 @@ resource "aws_security_group_rule" "allow_ssh" {
 
 
 
-
+//invoke public key in the jenkins user. 
 resource "aws_key_pair" "deployer" {
   key_name   = "ansible-deployer-key"
   public_key = file("/var/lib/jenkins/.ssh/id_rsa.pub")
 }
-
+//search a ami image tag with jiangren-packer-demo-1, see packer line 29 
 data "aws_ami" "image_packer-shell" {
   most_recent = true
   owners = ["self"]
@@ -65,7 +65,8 @@ data "aws_ami" "image_packer-ansible" {
     values = ["jiangren-packer-demo-2"]
   }
 }
-
+//use the ami data found in line 50 and lanch a instance. 
+//tag the instance with name shell project JRansible 
 resource "aws_instance" "packer-shell" {
   ami           = "${data.aws_ami.image_packer-shell.id}"
   instance_type = "t2.micro"

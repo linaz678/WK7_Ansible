@@ -36,7 +36,7 @@ pipeline {
             when {expression{return params.blPackerAnsible}}
             steps {
                 withAWS(credentials: 'AWS_linazhao', region: 'ap-southeast-2') {
-                    // some block
+                    // some block dir packer/2.bake-ec2-to-image-ansible-provisioner
                     dir('packer/2.bake-ec2-to-image-ansible-provisioner') {
                         sh '''
                             packer init .
@@ -66,7 +66,7 @@ pipeline {
             when {expression{return params.blTestAnsible}}
             steps {
                 withAWS(credentials: 'AWS_linazhao', region: 'ap-southeast-2') {
-                    // some block, 对名字
+                    
                     dir('ansible') {
                         sh '''
                             ansible all  -m ping
