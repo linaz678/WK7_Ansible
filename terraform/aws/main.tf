@@ -13,7 +13,7 @@ provider "aws" {
   region  = "ap-southeast-2"
 }
 
-resource "aws_security_group_rule" "allow_80" { //create security group and alllow 80, 
+resource "aws_security_group_rule" "allow_80" {
   type              = "ingress"
   from_port         = 80
   to_port           = 80
@@ -22,7 +22,7 @@ resource "aws_security_group_rule" "allow_80" { //create security group and alll
   cidr_blocks       = ["0.0.0.0/0"]
 }
 
-resource "aws_security_group_rule" "allow_8080" {// 之后我们要通过ansible 的playbook装一下Jenkins 所以需要开放8080 端口
+resource "aws_security_group_rule" "allow_8080" {
   type              = "ingress"
   from_port         = 8080
   to_port           = 8080
@@ -31,21 +31,21 @@ resource "aws_security_group_rule" "allow_8080" {// 之后我们要通过ansible
   cidr_blocks       = ["0.0.0.0/0"]
 }
 
-resource "aws_key_pair" "deployer" { // create aws_key pair
+resource "aws_key_pair" "deployer" {
   key_name   = "ansible-deployer-key"
-  public_key = file("/var/lib/jenkins/.ssh/id_rsa.pub") // invoke jinkins 用户已有的密钥，没有新生成密钥
+  public_key = file("/var/lib/jenkins/.ssh/id_rsa.pub")
 }
 
-data "aws_ami" "image_packer-shell" { //search aws_ami with the filter ami aws_ami.iamge_packer-shell
+data "aws_ami" "image_packer-shell" {
   most_recent = true
   owners = ["self"]
   filter {
     name = "tag:Base_AMI_Name"
-    values = ["jiangren-packer-demo-1"] // choose ami with tag jiangren-packer-demo-1, defined in packer file line 29 
+    values = ["jiangren-packer-demo-1"]
   }
 }
 
-data "aws_ami" "image_packer-ansible" {// search aws_ami ami aws_ami.iamge_packer-ansible
+data "aws_ami" "image_packer-ansible" {
   most_recent = true
   owners = ["self"]
   filter {
@@ -55,12 +55,12 @@ data "aws_ami" "image_packer-ansible" {// search aws_ami ami aws_ami.iamge_packe
 }
 
 resource "aws_instance" "packer-shell" {
-  ami           = "${data.aws_ami.image_packer-shell.id}" //create instance using ami iamge from the data 
+  ami           = "${data.aws_ami.image_packer-shell.id}"
   instance_type = "t2.micro"
   key_name = "${aws_key_pair.deployer.key_name}"
 
   tags = {
-    Name = "shell"//EC2 tage shell 
+    Name = "shell"
     Project = "JRAnsible"
   }
 }
@@ -70,7 +70,7 @@ resource "aws_instance" "packer-ansible" {
   instance_type = "t2.micro"
   key_name = "${aws_key_pair.deployer.key_name}"
 
-  user_data = <<EOD 
+  user_data = <<EOD
 #!/bin/bash
 sudo cat <<EOF > /var/www/html/index.html
 <!DOCTYPE html>
@@ -94,8 +94,7 @@ EOF
 EOD
 
   tags = {
-    Name = "ansible" //EC2 tag ansible 
+    Name = "ansible"
     Project = "JRAnsible"
   }
 }
-
