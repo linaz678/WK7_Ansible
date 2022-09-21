@@ -19,7 +19,7 @@ pipeline {
         stage('Packer Shell') {
             when {expression{return params.blPackerShell}}
             steps {
-                withAWS(credentials: 'AWS_JR8', region: 'ap-southeast-2') {
+                withAWS(credentials: 'AWS_linazhao', region: 'ap-southeast-2') {
                     // some block
                     dir('packer/1.bake-ec2-to-image-shell-provisioner') {
                         sh '''
@@ -35,7 +35,7 @@ pipeline {
         stage('Packer Ansible') {
             when {expression{return params.blPackerAnsible}}
             steps {
-                withAWS(credentials: 'AWS_JR8', region: 'ap-southeast-2') {
+                withAWS(credentials: 'AWS_linazhao', region: 'ap-southeast-2') {
                     // some block
                     dir('packer/2.bake-ec2-to-image-ansible-provisioner') {
                         sh '''
@@ -51,7 +51,7 @@ pipeline {
         stage('Launch Instances') {
             when {expression{return params.blApplyAWS}}
             steps {
-                withAWS(credentials: 'AWS_JR8', region: 'ap-southeast-2') {
+                withAWS(credentials: 'AWS_linazhao', region: 'ap-southeast-2') {
                     // some block
                     dir('terraform/aws') {
                         sh '''
@@ -65,7 +65,7 @@ pipeline {
         stage('Test Ansible') {
             when {expression{return params.blTestAnsible}}
             steps {
-                withAWS(credentials: 'AWS_JR8', region: 'ap-southeast-2') {
+                withAWS(credentials: 'AWS_linazhao', region: 'ap-southeast-2') {
                     // some block
                     dir('ansible') {
                         sh '''
@@ -80,7 +80,7 @@ pipeline {
         stage('Update AWS EC2') {
             when {expression{return params.blUpdateAWS}}
             steps {
-                withAWS(credentials: 'AWS_JR8', region: 'ap-southeast-2') {
+                withAWS(credentials: 'AWS_linazhao', region: 'ap-southeast-2') {
                     // some block
                     dir('ansible') {
                         sh '''
@@ -93,7 +93,7 @@ pipeline {
         stage('Destroy Instances') {
             when {expression{return params.blDestroy}}
             steps {
-                withAWS(credentials: 'AWS_JR8', region: 'ap-southeast-2') {
+                withAWS(credentials: 'AWS_linazhao', region: 'ap-southeast-2') {
                     // some block
                     dir('terraform/aws') {
                         sh '''
