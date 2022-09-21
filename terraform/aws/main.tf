@@ -30,6 +30,18 @@ resource "aws_security_group_rule" "allow_8080" {
   security_group_id = "sg-0212b4a25537026c9"
   cidr_blocks       = ["0.0.0.0/0"]
 }
+resource "aws_security_group_rule" "allow_ssh" {
+  type              = "ingress"
+  from_port         = 22
+  to_port           = 22
+  protocol          = "tcp"
+  security_group_id = "sg-0212b4a25537026c9"
+  cidr_blocks       = ["0.0.0.0/0"]
+}
+
+
+
+
 
 resource "aws_key_pair" "deployer" {
   key_name   = "ansible-deployer-key"
